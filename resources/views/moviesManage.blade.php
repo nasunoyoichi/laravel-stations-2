@@ -23,7 +23,7 @@
             <td>{{ $movie->published_year }}</td>
             <td>{{ $movie->description }}</td>
             <td>{{ $movie->is_showing ? '上映中' : '上映予定' }}</td>
-            <td><a href="/admin/movies/edit/{{ $movie->id }}">編集</a></td>
+            <td><a href="/admin/movies/{{ $movie->id }}/edit">編集</a></td>
         </tr>
         @endforeach
     </table>

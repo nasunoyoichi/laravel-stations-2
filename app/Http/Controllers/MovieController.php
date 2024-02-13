@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Movie;
+use App\Models\Movie;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class MovieController extends Controller
 {
@@ -31,10 +32,6 @@ class MovieController extends Controller
         // dd($request->is_showing);
         if ($request->is_showing === 'on') {
             $request->merge(['is_showing' => true]);
-            //$request->is_showing = true;
-        } else {
-            $request->merge(['is_showing' => false]);
-            //$request->is_showing = false;
         }
         // dd($request);
 
@@ -57,13 +54,13 @@ class MovieController extends Controller
 
         // try catchでエラー処理を行う
         try {
-            $validated = new Movie();
-            $validated->title = $request->title;
-            $validated->image_url = $request->image_url;
-            $validated->published_year = $request->published_year;
-            $validated->description = $request->description;
-            $validated->is_showing = $request->is_showing;
-            $validated->save();
+            $movie = new Movie();
+            $movie->title = $request->title;
+            $movie->image_url = $request->image_url;
+            $movie->published_year = $request->published_year;
+            $movie->description = $request->description;
+            $movie->is_showing = $request->is_showing;
+            $movie->save();
             return redirect('/admin/movies/create')->with('flash_message', '登録が完了しました。');
         } catch (\Exception $e) {
             return redirect('/admin/movies/create')->with('flash_message', '登録に失敗しました。');
@@ -74,5 +71,44 @@ class MovieController extends Controller
     {
         $movie = Movie::find($id);
         return view('moviesEditForm', ['movie' => $movie]);
+    }
+
+    public function update(Request $request)
+    {
+        //dd($request);
+        if ($request->is_showing === 'on') {
+            $request->merge(['is_showing' => true]);
+        }
+        $request->validate([
+            'title' => ['required', Rule::unique('movies')->ignore($request->id)],
+            'image_url' => 'required|url',
+            'published_year' => 'required|integer',
+            'description' => 'required',
+            'is_showing' => 'required'
+        ],[
+            'title.required' => 'タイトルは必須です。',
+            'title.unique' => 'そのタイトルは既に登録されています。',
+            'image_url.required' => '画像URLは必須です。',
+            'image_url.url' => 'URLを正しく入力してください。',
+            'published_year.required' => '公開年は必須です。',
+            'published_year.integer' => '公開年は整数で入力してください。',
+            'description.required' => '説明は必須です。',
+            'is_showing.required' => '公開中かどうかは必須です。'
+        ]);
+
+        //dd($request->all());
+        try {
+            //idで検索して、そのデータを更新する
+            $movie = Movie::find($request->id);
+            $movie->title = $request->title;
+            $movie->image_url = $request->image_url;
+            $movie->published_year = $request->published_year;
+            $movie->description = $request->description;
+            $movie->is_showing = $request->is_showing;
+            $movie->save();
+            return redirect('/admin/movies/'.$request->id.'/edit',302);
+        } catch (\Exception $e) {
+            return redirect('/admin/movies/'.$request->id.'/edit',302);
+        }
     }
 }

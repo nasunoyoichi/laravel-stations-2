@@ -7,6 +7,20 @@
     <title>Practice</title>
 </head>
 <body>
+    <h1>映画一覧</h1>
+    <!-- 検索フォーム -->
+    <form action="{{ route('movies') }}" method="get">
+        @csrf
+        <input type="radio" name="is_showing" value="" id="all" checked>
+        <label for="all">すべて</label>
+        <input type="radio" name="is_showing" value="1" id="showing">
+        <label for="showing">上映中</label>
+        <input type="radio" name="is_showing" value="0" id="screeningSchedule">
+        <label for="screeningSchedule">上映予定</label>
+        <label for="keyword">キーワード：</label>
+        <input type="text" name="keyword" id="keyword" value="">
+        <input type="submit" value="検索">
+    </form>
     <table>
         <tr>
             <th>タイトル</th>

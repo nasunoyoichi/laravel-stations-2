@@ -10,9 +10,25 @@ class MovieController extends Controller
 {
     
 
-    public function index()
+    public function index(Request $request)
     {
-        $movies = Movie::all();
+        $query = Movie::query();
+        if (!empty($request->input('keyword'))) {
+            $spaceConversion = mb_convert_kana($request->input('keyword'), 's');
+            $wordArraySearched = preg_split('/[\s]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+            foreach ($wordArraySearched as $keyword) {
+                $query->where('title', 'like', '%'.$keyword.'%');
+                $query->orWhere('description', 'like', '%'.$keyword.'%');
+            }
+        }
+        $is_showing = $request->input('is_showing');
+        $keyword = $request->input('keyword');
+        if ($is_showing === '1') {
+            $query->where('is_showing', true);
+        } else if ($is_showing === '0') {
+            $query->where('is_showing', false);
+        } else ;
+        $movies = $query->paginate(20);
         return view('movies', ['movies' => $movies]);
     }
 
@@ -29,11 +45,9 @@ class MovieController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->is_showing);
         if ($request->is_showing === 'on') {
             $request->merge(['is_showing' => true]);
         }
-        // dd($request);
 
         $request->validate([
             'title' => 'required|unique:movies,title',

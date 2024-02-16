@@ -98,7 +98,6 @@ class MovieController extends Controller
 
         //dd($request->all());
         try {
-            //idで検索して、そのデータを更新する
             $movie = Movie::find($request->id);
             $movie->title = $request->title;
             $movie->image_url = $request->image_url;

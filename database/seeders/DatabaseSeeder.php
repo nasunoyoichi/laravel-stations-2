@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Movie;
+use App\Models\Movie;
 use App\Practice;
 use Illuminate\Database\Seeder;
 

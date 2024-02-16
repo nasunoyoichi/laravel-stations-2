@@ -110,4 +110,16 @@ class MovieController extends Controller
             return redirect('/admin/movies/'.$request->id.'/edit',302);
         }
     }
+
+    public function destroy($id)
+    {
+        //idが一致するレコードを削除、削除対象がない場合は404エラーを返す
+        $movie = Movie::find($id);
+        if ($movie) {
+            $movie->delete();
+            return redirect('/admin/movies',302)->with('flash_message', '削除が完了しました。');
+        } else {
+            return abort(404);
+        }
+    }
 }

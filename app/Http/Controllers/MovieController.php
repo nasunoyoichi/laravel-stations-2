@@ -45,11 +45,9 @@ class MovieController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->is_showing);
         if ($request->is_showing === 'on') {
             $request->merge(['is_showing' => true]);
         }
-        // dd($request);
 
         $request->validate([
             'title' => 'required|unique:movies,title',

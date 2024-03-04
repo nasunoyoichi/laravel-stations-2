@@ -15,6 +15,9 @@
             </ul>
         </div>
     @endif 
+    @if (session('message'))
+        <p>{{ session('message') }}</p>
+    @endif
 
     <h1>moviesテーブルにデータ登録</h1>
     <form action="/admin/movies/store" method="POST">

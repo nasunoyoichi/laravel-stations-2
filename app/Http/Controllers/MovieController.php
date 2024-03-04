@@ -75,9 +75,9 @@ class MovieController extends Controller
             $movie->description = $request->description;
             $movie->is_showing = $request->is_showing;
             $movie->save();
-            return redirect('/admin/movies/create')->with('flash_message', '登録が完了しました。');
+            return redirect('/admin/movies/create')->with('message', '登録が完了しました。');
         } catch (\Exception $e) {
-            return redirect('/admin/movies/create')->with('flash_message', '登録に失敗しました。');
+            return redirect('/admin/movies/create')->with('message', $e);
         }
     }
 

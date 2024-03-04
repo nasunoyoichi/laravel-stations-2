@@ -16,6 +16,12 @@
         </div>
     @endif 
 
+    @if(session('message'))
+    <div>
+        {{ session('message') }}
+    </div>
+    @endif
+
     <h1>moviesテーブルにデータ登録</h1>
     <form action="/admin/movies/store" method="POST">
     @csrf
@@ -33,7 +39,11 @@
         </div>
         <div>
             <label for="description">説明</label>
-            <textarea name="description" id="description"></textarea>
+            <textarea name="description" id="description" cols="30" rows="10"></textarea>
+        </div>
+        <div>
+            <label for="genre">ジャンル</label>
+            <textarea name="genre" id="genre"></textarea>
         </div>
         <div>
             <label for="is_showing">公開中かどうか</label>

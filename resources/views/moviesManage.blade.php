@@ -17,6 +17,7 @@
             <th>画像</th>
             <th>公開年</th>
             <th>説明</th>
+            <th>ジャンル</th>
             <th>公開中かどうか</th>
             <th>編集</th>
             <th>削除</th>
@@ -27,6 +28,7 @@
             <td><img src="{{ $movie->image_url }}" alt=""></td>
             <td>{{ $movie->published_year }}</td>
             <td>{{ $movie->description }}</td>
+            <td>{{ $movie->genre->name }}</td>
             <td>{{ $movie->is_showing ? '上映中' : '上映予定' }}</td>
             <td><a href="/admin/movies/{{ $movie->id }}/edit">編集</a></td>
             <td>

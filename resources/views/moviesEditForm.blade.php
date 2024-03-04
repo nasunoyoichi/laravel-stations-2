@@ -42,6 +42,10 @@
             <textarea name="description" id="description" cols="30" rows="10">{{ $movie->description }}</textarea>
         </div>
         <div>
+            <label for="genre">ジャンル</label>
+            <textarea name="genre" id="genre">{{ $genreName }}</textarea>
+        </div>
+        <div>
             <label for="is_showing">公開中かどうか</label>
             <input type="checkbox" name="is_showing" id="is_showing" {{ $movie->is_showing ? 'checked' : '' }}>
         </div>
